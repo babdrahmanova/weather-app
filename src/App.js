@@ -19,7 +19,8 @@ function App() {
     const API_KEY = 'e9189f8bcb20b3680cda1fe26a50440f';
     const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
 
-    axios.get(API_URL)
+    axios
+      .get(API_URL)
       .then((response) => {
         setWeatherData(response.data);
       })
@@ -28,16 +29,16 @@ function App() {
       });
   };
 
-  return (
-    <>
-      <div className="app">
-        <div className="search">
-          <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Enter city" value={city} onChange={handleChange} />
-            <button type="submit">Search</button>
-          </form>
-        </div>
-        {weatherData && (
+  if (weatherData && weatherData.cod === 200) {
+    return (
+      <>
+        <div className="app">
+          <div className="search">
+            <form onSubmit={handleSubmit}>
+              <input type="text" placeholder="Enter city" value={city} onChange={handleChange} />
+              <button type="submit">Search</button>
+            </form>
+          </div>
           <div className="container">
             <div className="top">
               <div className="location">
@@ -52,41 +53,36 @@ function App() {
             </div>
             <div className="bottom">
               <div className="feels">
-                <p className='bold'>{weatherData.main.feels_like.toFixed()}°C</p>
+                <p className="bold">{weatherData.main.feels_like.toFixed()}°C</p>
                 <p>Feels like</p>
               </div>
               <div className="humidity">
-                <p className='bold'>{weatherData.main.humidity}%</p>
+                <p className="bold">{weatherData.main.humidity}%</p>
                 <p>Humidity</p>
               </div>
               <div className="wind">
-                <p className='bold'>{weatherData.wind.speed.toFixed()} MPH</p>
+                <p className="bold">{weatherData.wind.speed.toFixed()} MPH</p>
                 <p>Wind speed</p>
               </div>
             </div>
           </div>
-        )
-}
-      </div>
-
-      {/* <div>
-        {weatherData && (
-          <div>
-            <h2>{weatherData.name}</h2>
-            <p>{weatherData.weather[0].description}</p>
-            <p className='weather_temp'>{weatherData.main.temp}°C</p>
-          </div>
-        )}
-        <div className="optional_weather_data">
-          <p>FEELS LIKE</p>
-          <h1>26°</h1>
-          <p>Similar to the actual
-            weather</p>
         </div>
-      </div> */}
-    </>
-
-  );
+      </>
+    );
+  }
+  return (
+    <div className="app">
+      <div className="container">
+      <div className="search">
+            <form onSubmit={handleSubmit}>
+              <input type="text" placeholder="Enter city" value={city} onChange={handleChange} />
+              <button type="submit">Search</button>
+            </form>
+          </div>
+        <h2>Access current weather data for any location on Earth including over 200,000 cities! </h2>;
+      </div>
+    </div>
+  )
 }
 
 export default App;
